@@ -1,0 +1,1 @@
+{"DATA_SEED": 22, "MODEL": "bert-base-uncased", "TRAINPATH": "../data/subtask3-coreference/train.json", "DEVPATH": "../data/subtask3-coreference/dev.json", "TESTPATH": "../data/subtask3-coreference/test.json", "TRAIN_CROSS": false, "TRAIN_RATIO": 0.50, "DEV_CROSS": false, "DEV_RATIO": 0.50, "TEST_CROSS": false, "TEST_RATIO": 0.50}

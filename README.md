@@ -48,7 +48,7 @@ BERT     | 0.70  | 0.69
 RoBERTa  | 0.72  | 0.74
 BERT-BiLSTM-CRF     | 0.76  | 0.75
 RoBERTa-BiLSTM-CRF  | 0.76  | 0.76
-Table 4: Document level classification results (Subtask 1)
+Table 4: Document level classification results (Subtask 4)
 
 This repository contains both scripts and notebooks necessary to run each models for each subtask. To reproduce our works, one can use hyperparameters given in the Appendix.
 

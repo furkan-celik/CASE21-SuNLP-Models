@@ -32,6 +32,14 @@ def parsedata(path):
 
 
 def createpairs(data,sents,cross=False,ratio=None):
+    """
+    this function will create the pairs.
+
+    data: list of sent clusters
+    sents: sentence dictionary for id and content
+    cross: binary. if true, cross document sampling will happen.
+    ratio: float. desired positive ratio. 
+    """
     allpairs_code = []
     positive = []
     pair_idx = {}
@@ -69,6 +77,11 @@ def createpairs(data,sents,cross=False,ratio=None):
     return allpairs_code,allpairs_sent
 
 def gimme_tensors(sents,tokenizer):
+    """
+    creating tensors with given sentence pairs.
+    sents: snetence pairs.
+    tokenizer: transformer tokenizer.
+    """
     II, AM, LABEL= [],[],[]
     for i,_ in enumerate(sents):
         label = sents[i][-1]

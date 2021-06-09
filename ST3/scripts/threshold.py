@@ -8,6 +8,9 @@ import warnings
 warnings.filterwarnings("ignore")
 
 if __name__ == '__main__':
+    """
+    loading trained model. then trying different threshold values to see the best for our metrics.
+    """
 
     torch.cuda.empty_cache()
 
@@ -28,6 +31,7 @@ if __name__ == '__main__':
     seed_everything(MODEL_SEED)
 
     
+    ### loading trained model.
     model = CorefClassifier.load_from_checkpoint("../models/bert-base-uncased-epoch=03-val_conll=0.9089.ckpt",
                         MODEL   = model_parameters["MODEL"],
                         TRAIN_DATA  = TensorDataset(TR_II,TR_AM,TR_LABEL),TRAIN_CODES = train_codes,
@@ -58,6 +62,7 @@ if __name__ == '__main__':
 
     pd.DataFrame(CSV_RESULTS).to_csv("../CSVs/CSV_FOR_ANALYSIS.csv")
 
+    # trying different threshold values.
     THRESHOLDS = [0.3,0.4,0.5,0.6,0.65,0.7,0.8]
     BEST_CONLL = 0
     for THRESHOLD in THRESHOLDS:

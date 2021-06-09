@@ -7,7 +7,9 @@ from torch.utils.data import TensorDataset
 from pytorch_lightning.loggers.neptune import NeptuneLogger
 
 def single_cluster_baseline(pairs,labels,set_):
-
+    """
+    creating single baseline results
+    """
     cc = (labels.flatten()== 1.0).nonzero(as_tuple=False).flatten()
 
     key = list(map(pairs.__getitem__,cc))
@@ -21,6 +23,7 @@ if __name__ == '__main__':
 
     torch.cuda.empty_cache()
 
+    ### parsing parameters
     parser = argparse.ArgumentParser()
     parser.add_argument('-config', '--c', required=True)
     args = parser.parse_args()
@@ -29,15 +32,18 @@ if __name__ == '__main__':
     model_parameters = json.load(open(args.c+"/model_parameters.json","r"))
     MODEL_SEED = model_parameters["MODEL_SEED"]
     DATA_SEED = data_parameters["DATA_SEED"]
-    
+    ####
 
 
-
+    ### reading datasets
     [TR_II,TR_AM,TR_LABEL,DE_II,DE_AM,DE_LABEL,TE_II,TE_AM,TE_LABEL],[train_codes,dev_codes,test_codes] = gimme_datasets(**data_parameters)
     single_cluster_baseline(dev_codes,DE_LABEL,"val")
     single_cluster_baseline(test_codes,TE_LABEL,"test")
+    ### 
 
     seed_everything(MODEL_SEED)
+    
+    ###  initializing logger, early stop and chechpoint 
     NEPTUNE_API="eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vdWkubmVwdHVuZS5haSIsImFwaV91cmwiOiJodHRwczovL3VpLm5lcHR1bmUuYWkiLCJhcGlfa2V5IjoiOGQ0YWZhNjAtYWRmOS00ZWYyLWI4NGYtMWFhZmI1MDI2YTk3In0="
     checkpoint_callback = ModelCheckpoint(
     monitor='val_conll',
@@ -53,6 +59,7 @@ if __name__ == '__main__':
        verbose=False,
        mode='max')
     
+    ### initializing CorefClassifier with given parameters
     model = CorefClassifier(MODEL   = model_parameters["MODEL"],
                         TRAIN_DATA  = TensorDataset(TR_II,TR_AM,TR_LABEL),TRAIN_CODES = train_codes,
                         DEV_DATA    = TensorDataset(DE_II,DE_AM,DE_LABEL),DEV_CODES = dev_codes,
@@ -68,10 +75,11 @@ if __name__ == '__main__':
                                project_name="fatihbeyhan/CASE21-SUBTASK3",
                                params = {**model_parameters,**data_parameters})
     
+    ### initializing trainer
     trainer = Trainer(max_epochs = model_parameters["EPOCHS"],
                         gpus = 1,
-                        auto_lr_find=True,
-                        auto_scale_batch_size='binsearch',
+                        #auto_lr_find=True,
+                        #auto_scale_batch_size='binsearch',
                         #gradient_clip_val= GRADIENT_CLIP,
                         #limit_train_batches = 1,
                         #limit_val_batches = 2,
@@ -80,6 +88,8 @@ if __name__ == '__main__':
                         #accelerator='ddp',
                         callbacks = [checkpoint_callback,early_stop_callback]
                  )
-    trainer.tune(model)
+
+    ### fitting the model
+    #trainer.tune(model)
     trainer.fit(model)
     trainer.test()

@@ -1,7 +1,9 @@
 import torch
 import json
 import subprocess
-
+"""
+using scorch for CoNLL coreference evaluation. 
+"""
 def links(pairs,outputs,labels,threshold,set_):
     cc = (labels.flatten()== 1.0).nonzero(as_tuple=False).flatten()
     c = ((outputs.flatten()>threshold).float() == 1.0).nonzero(as_tuple=False).flatten()

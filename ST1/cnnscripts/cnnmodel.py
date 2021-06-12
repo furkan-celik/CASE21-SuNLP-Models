@@ -12,7 +12,7 @@ class MacroF1Callback(tf.keras.callbacks.Callback):
     
     y_pred = self.model.predict(X_val)
 
-    print("Train F1 Score: ", f1_score(y_val, y_pred > 0.5, average = "macro"))
+    print("Test F1 Score: ", f1_score(y_val, y_pred > 0.5, average = "macro"))
 
 def get_model(embedding_matrix, maxlen, PARAMS):
   model = tf.keras.models.Sequential([

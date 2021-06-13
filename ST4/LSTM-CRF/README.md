@@ -1,0 +1,3 @@
+This scripts are adaptation from the original works at https://github.com/furkan-celik/pytorch_lstmcrf
+
+We made some changes in the original repository for our task, eliminated some redundencies and implemented some new parts. We updated original repository for some of those, but some of them is special to this project and data which can prevent original work in wider sense. We forked original repository for future replication of works with the correct version.

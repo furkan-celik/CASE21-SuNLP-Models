@@ -1,0 +1,6 @@
+pytorch==1.7.1
+transformers==4.0.0
+tqdm==4.61.1
+termcolor==1.1.0
+overrides==6.1.0
+numpy==1.20.3
